@@ -1,0 +1,36 @@
+{
+  "name": "style-book",
+  "version": "0.0.1",
+  "description": "Web app that allows stylists to organize and access data for clients, services, and appointments.",
+  "main": "server.js",
+  "scripts": {
+    "test": "export NODE_ENV=test && jasmine",
+    "dev": "nodemon src/server.js",
+    "start": "node src/server.js",
+    "rollback": "sequelize db:migrate:undo:all && sequelize db:migrate:undo:all --env test",
+    "migrate": "sequelize db:migrate && sequelize db:migrate --env test",
+    "resetdb": "npm run rollback && npm run migrate"
+  },
+  "author": "Josh Gude",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.18.3",
+    "dotenv": "^6.2.0",
+    "express": "^4.16.4",
+    "express-validator": "^5.3.1",
+    "jsonwebtoken": "^8.4.0",
+    "passport": "^0.4.0",
+    "passport-jwt": "^4.0.0",
+    "pg": "^7.7.1",
+    "pg-hstore": "^2.3.2",
+    "sequelize": "^4.42.0",
+    "sequelize-cli": "^5.4.0"
+  },
+  "devDependencies": {
+    "jasmine": "^3.3.1",
+    "nodemon": "^1.18.9",
+    "request": "^2.88.0"
+  }
+}
