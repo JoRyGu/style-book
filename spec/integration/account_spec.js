@@ -2,10 +2,11 @@ const axios = require('axios');
 const server = require('../../src/server');
 const baseRoute = 'http://localhost:5000/api';
 const Stylist = require('../../src/db/models').Stylist;
+const stylistQuery = require('../../src/db/queries').Stylist;
 const sequelize = require('../../src/db/models/index').sequelize;
 const hashPassword = require('../../helpers/hashPassword');
 
-describe('Login Routes', () => {
+describe('Account Routes', () => {
   beforeEach(async (done) => {
     this.stylist;
     await sequelize.sync({ force: true });
@@ -106,6 +107,37 @@ describe('Login Routes', () => {
         expect(error.response.status).toBe(400);
         expect(error.response.data.error).toBe('Incorrect email or password.');
       }
+      done();
+    })
+  });
+
+  describe('POST http://localhost:5000/api/v1/signup', () => {
+    it('Should create a new stylist in the database', async (done) => {
+      try {
+        const response = await axios({
+          method: 'post',
+          url: `${baseRoute}/v1/signup`,
+          data: {
+            email: 'john@fake.net',
+            password: 'password',
+            confirmPassword: 'password',
+            firstName: 'John',
+            lastName: 'Smith'
+          }
+        })
+      } catch(error) {
+        console.log(error.response.data);
+      }
+
+      expect(response.data.success).toBe('You have successfully created an account.');
+
+      const stylist = await stylistQuery.getByEmail('john@fake.net');
+
+      expect(stylist).not.toBeFalsy();
+      expect(stylist.email).toBe('john@fake.net');
+      expect(stylist.firstName).toBe('John');
+      expect(stylist.lastName).toBe('Smith');
+
       done();
     })
   })

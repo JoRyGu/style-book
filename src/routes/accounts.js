@@ -40,6 +40,17 @@ router.post('/api/v1/login', async (req, res) => {
       });
     }
   }
+});
+
+router.post('/api/v1/signup', async (req, res) => {
+  const validate = require('../../helpers/validation/validateSignup');
+  const errors = validate(req);
+
+  if(Object.keys(errors).length > 0) {
+    return res.status(400).json(errors);
+  }
+
+  
 })
 
 module.exports = router;
