@@ -13,7 +13,6 @@ describe('Account Routes', () => {
     const hashedPassword = await hashPassword('password');
 
     this.stylist = await Stylist.create({
-      id: 1,
       email: 'joanna@fake.net',
       password: hashedPassword,
       firstName: 'Joanna',
@@ -125,20 +124,20 @@ describe('Account Routes', () => {
             lastName: 'Smith'
           }
         })
+
+        expect(response.data.success).toBe(true);
+
+        const stylist = await stylistQuery.getByEmail('john@fake.net');
+
+        expect(stylist).not.toBeFalsy();
+        expect(stylist.email).toBe('john@fake.net');
+        expect(stylist.firstName).toBe('John');
+        expect(stylist.lastName).toBe('Smith');
+        done();
       } catch(error) {
         console.log(error.response.data);
+        done();
       }
-
-      expect(response.data.success).toBe('You have successfully created an account.');
-
-      const stylist = await stylistQuery.getByEmail('john@fake.net');
-
-      expect(stylist).not.toBeFalsy();
-      expect(stylist.email).toBe('john@fake.net');
-      expect(stylist.firstName).toBe('John');
-      expect(stylist.lastName).toBe('Smith');
-
-      done();
     })
   })
 })

@@ -6,7 +6,7 @@ const passport = require('passport');
 const secret = process.env.secretOrKey;
 const jwt = require('jsonwebtoken');
 
-router.get('/', (req, res) => {
+router.get('/api/v1/getStylist', passport.authenticate('jwt', { session: false }), (req, res) => {
   res.json({
     success: true
   })
