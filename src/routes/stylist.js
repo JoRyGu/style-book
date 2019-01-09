@@ -5,11 +5,10 @@ const bcrypt = require('bcryptjs');
 const passport = require('passport');
 const secret = process.env.secretOrKey;
 const jwt = require('jsonwebtoken');
+const path = require('path');
 
-router.get('/api/v1/getStylist', passport.authenticate('jwt', { session: false }), (req, res) => {
-  res.json({
-    success: true
-  })
-})
+router.get('/*', (req, res) => {
+  res.sendFile(path.join(__dirname,'..', '..', 'client', 'build', 'index.html'));
+});
 
 module.exports = router;

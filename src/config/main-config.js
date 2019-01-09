@@ -10,7 +10,7 @@ module.exports = {
     app.use(bodyParser.json());
     app.use(passport.initialize());
     require('./passport-config')(passport);
-    app.use(express.static(path.join(__dirname, '..', 'assets')));
+    app.use(express.static(path.join(__dirname, '..', '..', 'client', 'build')));
     app.use(expressValidator());
   }
 }
