@@ -45,28 +45,29 @@ router.post('/api/v1/login', async (req, res) => {
 
 router.post('/api/v1/signup', async (req, res) => {
   const validate = require('../../helpers/validation/validateSignup');
-  const errors = validate(req);
+  const errors = await validate(req);
 
   if(Object.keys(errors).length > 0) {
     return res.status(400).json(errors);
   }
 
-  const newStylist = await Stylist.create({
-    firstName: req.body.firstName,
-    lastName: req.body.lastName,
-    email: req.body.email,
-    password: req.body.password
-  });
+  try {
+    const newStylist = await Stylist.create({
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      email: req.body.email,
+      password: req.body.password
+    });
 
-  if(newStylist) {
     res.status(200).json({
       success: true,
       firstName: newStylist.firstName,
       lastName: newStylist.lastName
     });
-  } else {
+  } catch(error) {
+    errors['dbError'] = error.errors[0].message;
     res.status(400).json({
-      error: 'There was an error creating your account.'
+      errors
     })
   }
 });
