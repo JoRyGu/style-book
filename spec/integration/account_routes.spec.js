@@ -127,6 +127,7 @@ describe('Account Routes', () => {
         })
 
         expect(response.data.success).toBe(true);
+        expect(response.data.token).toContain('Bearer');
 
         const stylist = await stylistQuery.getByEmail('john@fake.net');
 

@@ -16,12 +16,7 @@ const Button = styled.button`
   }
 
   &:active {
-    transform: translate(2px, 2px);
-    outline: none;
-  }
-
-  &:focus {
-    outline: none;
+    transform: translate(2px, 2px); 
   }
   
   ${props => props.red && css`

@@ -6,11 +6,11 @@ module.exports = async req => {
     errors.email = 'Email field is required.';
   }
 
-  if(req.body.password.length < 8) {
+  if(req.body.password && req.body.password.length < 8) {
     errors.password = 'Password must be greater than 8 characters.';
   }
 
-  if(req.body.password.length > 80) {
+  if(req.body.password && req.body.password.length > 80) {
     errors.password = 'Password must be less than 80 characters.';
   }
 

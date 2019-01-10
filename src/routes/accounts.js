@@ -29,7 +29,7 @@ router.post('/api/v1/login', async (req, res) => {
         lastName: stylist.lastName
       };
 
-      jwt.sign(payload, secret, { expiresIn: '8h' }, (err, token) => {
+      jwt.sign(payload, secret, { expiresIn: '168h' }, (err, token) => {
         res.status(200).json({
           success: true,
           token: `Bearer ${token}`
@@ -59,11 +59,19 @@ router.post('/api/v1/signup', async (req, res) => {
       password: req.body.password
     });
 
-    res.status(200).json({
-      success: true,
+    const payload = {
+      id: newStylist.id,
       firstName: newStylist.firstName,
       lastName: newStylist.lastName
-    });
+    };
+
+    jwt.sign(payload, secret, { expiresIn: '168h' }, (err, token) => {
+      res.status(200).json({
+        success: true,
+        token: `Bearer ${token}`
+      });
+    })
+
   } catch(error) {
     errors['dbError'] = error.errors[0].message;
     res.status(400).json({

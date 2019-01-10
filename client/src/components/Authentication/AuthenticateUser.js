@@ -17,11 +17,15 @@ class AuthenticateUser extends Component {
     const token = localStorage.getItem('stylistToken');
 
     if(!token) {
-      console.log('no token');
       this.props.history.push('/login');
     } else {
       const decodedToken = jwtDecode(token);
-      console.log(decodedToken);
+      const currentTime = Math.floor(new Date().getTime() / 1000);
+      console.log('Current Time:', currentTime, 'Expiration Time:', decodedToken.exp);
+      if(currentTime > decodedToken.exp) {
+        localStorage.removeItem('stylistToken');
+        this.props.history.push('/login');
+      }
     }
   }
 

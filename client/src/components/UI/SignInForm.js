@@ -16,6 +16,22 @@ class SignInForm extends Component {
     }
     this.handleChange = this.handleChange.bind(this);
     this.submitForm = this.submitForm.bind(this);
+    this.handleSignUp = this.handleSignUp.bind(this);
+    this.handleEnterPress = this.handleEnterPress.bind(this);
+  }
+
+  componentDidMount() {
+    document.addEventListener('keypress', this.handleEnterPress);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('keypress', this.handleEnterPress);
+  }
+
+  handleEnterPress(event) {
+    if(event.keyCode === 13) {
+      this.submitForm(event);
+    }
   }
 
   async submitForm(event) {
@@ -26,7 +42,7 @@ class SignInForm extends Component {
         url: 'api/v1/login',
         method: 'post',
         data: {
-          email: this.state.email,
+          email: this.state.email ? this.state.email.toLowerCase() : undefined,
           password: this.state.password
         }
       });
@@ -49,6 +65,11 @@ class SignInForm extends Component {
     })
   }
 
+  handleSignUp(event) {
+    event.preventDefault();
+    this.props.signUp();
+  }
+
   render() {
     return (
       <StyledForm onSubmit={this.submitForm}>
@@ -59,7 +80,7 @@ class SignInForm extends Component {
         <StyledInput type="password" id="password" name="password" onChange={this.handleChange}/>
         { this.state.passwordErr ? <ErrorMessage>{ this.state.passwordErr }</ErrorMessage> : null }
         <ButtonDiv>
-          <Button red>Sign Up</Button>
+          <Button red onClick={ this.handleSignUp }>Sign Up</Button>
           <Button type="submit">Sign In</Button>
         </ButtonDiv>
         { this.state.stylistErr ? <ErrorMessage>{ this.state.stylistErr }</ErrorMessage> : null }
@@ -69,7 +90,7 @@ class SignInForm extends Component {
   }
 }
 
-const ErrorMessage = styled.p`
+export const ErrorMessage = styled.p`
   color: red;
   margin-top: -10px;
   font-size: 1.4rem;
@@ -93,7 +114,7 @@ const StyledForm = styled.form`
   }
 `;
 
-const StyledInput = styled.input`
+export const StyledInput = styled.input`
   height: 3rem;
   width: 30rem;
   font-size: 1.8rem;
@@ -105,7 +126,7 @@ const StyledInput = styled.input`
   padding: 0 8px;
 `;
 
-const StyledLabel = styled.label`
+export const StyledLabel = styled.label`
   font-size: 2.2rem;
   margin-bottom: 3px;
 `;

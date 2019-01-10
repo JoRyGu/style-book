@@ -1,18 +1,44 @@
 import React, { Component } from 'react';
 import SignInForm from '../UI/SignInForm';
+import SignUpForm from '../UI/SignUpForm';
 import styled from 'styled-components';
 
 class SignIn extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      signUpVisible: false,
+      signInVisible: true
+    };
+    
+    this.showSignUp = this.showSignUp.bind(this);
+    this.hideSignUp = this.hideSignUp.bind(this);
+  }
+
+  showSignUp() {
+    if(!this.state.signUpVisible) {
+      this.setState({
+        signUpVisible: true,
+        signInVisible: false
+      })
+    }
+  }
+
+  hideSignUp() {
+    if(this.state.signUpVisible) {
+      this.setState({
+        signUpVisible: false,
+        signInVisible: true
+      })
+    }
   }
 
   render() {
     return (
       <StyledDiv>
         <StyledH1>Style Book</StyledH1>
-        <SignInForm />
+        { this.state.signUpVisible ? <SignUpForm signIn={ this.hideSignUp } /> : null }
+        { this.state.signInVisible ? <SignInForm signUp={ this.showSignUp } /> : null }
       </StyledDiv>
     )
   }
@@ -38,7 +64,7 @@ const StyledDiv = styled.div`
     grid-column: 5 / span 4;
     justify-self: center;
     align-self: center;
-    grid-row: 2 / span 1;
+    grid-row: 1 / span 2;
   }
 
   @media only screen and (max-height: 380px) {
@@ -60,6 +86,13 @@ const StyledDiv = styled.div`
 
     & > form {
       width: 370px;
+    }
+  }
+
+  @media only screen and (max-height: 900px) {
+    & > h1 {
+      font-size: 7rem;
+      grid-row: 1 / span 2;
     }
   }
 `;
