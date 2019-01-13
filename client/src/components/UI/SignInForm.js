@@ -61,7 +61,10 @@ class SignInForm extends Component {
 
   handleChange(event) {
     this.setState({
-      [event.target.name]: event.target.value
+      [event.target.name]: event.target.value,
+      emailErr: undefined,
+      passwordErr: undefined,
+      stylistErr: undefined
     })
   }
 

@@ -37,7 +37,7 @@ router.post('/api/v1/login', async (req, res) => {
       })
     } else {
       res.status(400).json({
-        error: 'Incorrect email or password.'
+        stylist: 'Incorrect email or password.'
       });
     }
   }
