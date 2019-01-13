@@ -34,6 +34,7 @@ class SignIn extends Component {
   }
 
   render() {
+    
     return (
       <StyledDiv>
         <StyledH1>Style Book</StyledH1>
@@ -98,7 +99,7 @@ const StyledDiv = styled.div`
 `;
 
 const StyledH1 = styled.h1`
-  font-family: philosopher;
+  font-family: Philosopher;
   font-size: 9rem;
   text-shadow: 2px 2px 2px rgba(0,0,0,0.5);
 `;

@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import jwtDecode from 'jwt-decode';
 
+export const AuthContext = React.createContext();
+
 class AuthenticateUser extends Component {
   constructor(props) {
     super(props);
@@ -21,19 +23,24 @@ class AuthenticateUser extends Component {
     } else {
       const decodedToken = jwtDecode(token);
       const currentTime = Math.floor(new Date().getTime() / 1000);
-      console.log('Current Time:', currentTime, 'Expiration Time:', decodedToken.exp);
       if(currentTime > decodedToken.exp) {
         localStorage.removeItem('stylistToken');
         this.props.history.push('/login');
+      } else {
+        this.setState({
+          userId: decodedToken.id,
+          userFirstName: decodedToken.firstName,
+          userLastName: decodedToken.lastName
+        });
       }
     }
   }
 
   render() {
     return (
-      <div>
-        {this.props.children}
-      </div>
+      <AuthContext.Provider value={this.state}>
+        { this.props.children }
+      </AuthContext.Provider>
     )
   }
 }
