@@ -62,7 +62,12 @@ class SignUpForm extends Component {
 
   handleChange(event) {
     this.setState({
-      [event.target.name]: event.target.value
+      [event.target.name]: event.target.value,
+      firstNameErr: undefined,
+      lastNameErr: undefined,
+      emailErr: undefined,
+      passwordErr: undefined,
+      confirmPasswordErr: undefined
     });
   }
 
