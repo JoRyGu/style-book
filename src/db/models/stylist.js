@@ -24,6 +24,9 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   Stylist.associate = function(models) {
     // associations can be defined here
+    Stylist.hasMany(models.Client, {
+      foreignKey: 'stylistId'
+    });
   };
   return Stylist;
 };
