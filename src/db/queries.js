@@ -1,4 +1,5 @@
 const Stylist = require('./models').Stylist;
+const Client = require('./models').Client;
 const hash = require('../../helpers/hashPassword');
 
 module.exports = {
@@ -29,7 +30,27 @@ module.exports = {
       } catch (error) {
         throw error;
       }
-      
+    },
+
+    async getById(id) {
+      try {
+        return await Stylist.findByPk(id);
+      } catch (error) {
+        throw error;
+      }
+    }
+  },
+  Client: {
+    async getAllForStylist(stylistId) {
+      try {
+        return await Client.findAll({
+          where: {
+            stylistId
+          }
+        });
+      } catch (error) {
+        throw error;
+      }
     }
   }
 }
