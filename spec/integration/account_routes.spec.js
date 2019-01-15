@@ -105,7 +105,7 @@ describe('Account Routes', () => {
         });
       } catch(error) {
         expect(error.response.status).toBe(400);
-        expect(error.response.data.error).toBe('Incorrect email or password.');
+        expect(error.response.data.stylist).toBe('Incorrect email or password.');
       }
       done();
     })

@@ -29,7 +29,7 @@ router.post('/api/v1/login', async (req, res) => {
         lastName: stylist.lastName
       };
 
-      jwt.sign(payload, secret, { expiresIn: '168h' }, (err, token) => {
+      jwt.sign(payload, secret, { expiresIn: '8h' }, (err, token) => {
         res.status(200).json({
           success: true,
           token: `Bearer ${token}`

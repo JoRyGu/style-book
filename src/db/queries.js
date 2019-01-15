@@ -30,6 +30,7 @@ module.exports = {
       } catch (error) {
         throw error;
       }
+
     },
 
     async getById(id) {
@@ -43,11 +44,24 @@ module.exports = {
   Client: {
     async getAllForStylist(stylistId) {
       try {
-        return await Client.findAll({
+        const clientList = await Client.findAll({
           where: {
             stylistId
           }
         });
+
+        if (clientList.length === 0) {
+          throw new Error('No clients for that ID.');
+        } else {
+          return clientList;
+        }
+      } catch (error) {
+        throw error;
+      }
+    },
+    async create(client) {
+      try {
+        return await Client.create(client);
       } catch (error) {
         throw error;
       }
