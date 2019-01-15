@@ -17,7 +17,7 @@ class Dashboard extends React.Component {
     const token = localStorage.getItem('stylistToken');
 
     if(!token) {
-      this.props.history.push('/login');
+      this.props.history.push('/app/login');
     }
   }
 

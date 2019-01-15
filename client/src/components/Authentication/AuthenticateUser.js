@@ -19,13 +19,13 @@ class AuthenticateUser extends Component {
     const token = localStorage.getItem('stylistToken');
 
     if(!token) {
-      this.props.history.push('/login');
+      this.props.history.push('/app/login');
     } else {
       const decodedToken = jwtDecode(token);
       const currentTime = Math.floor(new Date().getTime() / 1000);
       if(currentTime > decodedToken.exp) {
         localStorage.removeItem('stylistToken');
-        this.props.history.push('/login');
+        this.props.history.push('/app/login');
       } else {
         this.setState({
           userId: decodedToken.id,
