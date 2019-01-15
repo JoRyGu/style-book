@@ -1,12 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const passport = require('passport');
-const { Stylist, Client } = require('../db/queries');
+const { Stylist } = require('../db/queries');
 
 router.get('/api/v1/:stylistId/clients', passport.authenticate('jwt', { session: false }), async (req, res) => {
   const stylist = await Stylist.getById(req.params.stylistId);
   const clients = await stylist.getClients();
-
+  
   if(!stylist) {
     return res.status(400).json({ error: 'Invalid URL' });
   }

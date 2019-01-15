@@ -30,13 +30,13 @@ module.exports = {
       } catch (error) {
         throw error;
       }
-      
+
     },
 
     async getById(id) {
       try {
         return await Stylist.findByPk(id);
-      } catch(error) {
+      } catch (error) {
         throw error;
       }
     }
