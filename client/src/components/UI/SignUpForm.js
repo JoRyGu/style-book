@@ -43,7 +43,7 @@ class SignUpForm extends Component {
       });
 
       localStorage.setItem('stylistToken', res.data.token);
-      this.props.history.push('/dashboard');
+      this.props.history.push('/app/dashboard');
 
     } catch(error) {
       this.setState({

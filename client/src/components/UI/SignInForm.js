@@ -39,7 +39,7 @@ class SignInForm extends Component {
 
     try{
       const res = await axios({
-        url: 'api/v1/login',
+        url: '/api/v1/login',
         method: 'post',
         data: {
           email: this.state.email ? this.state.email.toLowerCase() : undefined,
@@ -48,8 +48,9 @@ class SignInForm extends Component {
       });
   
       localStorage.setItem('stylistToken', res.data.token);
-      this.props.history.push('/dashboard');
+      this.props.history.push('/app/dashboard');
     } catch(error) {
+      console.log(error.response.data);
       this.setState({
         emailErr: error.response.data.email,
         passwordErr: error.response.data.password,
