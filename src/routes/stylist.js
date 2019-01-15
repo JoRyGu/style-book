@@ -7,7 +7,7 @@ const secret = process.env.secretOrKey;
 const jwt = require('jsonwebtoken');
 const path = require('path');
 
-router.get('/client/*', (req, res) => {
+router.get('/app/*', (req, res) => {
   res.sendFile(path.join(__dirname,'..', '..', 'client', 'build', 'index.html'));
 });
 
