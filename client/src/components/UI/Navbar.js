@@ -64,10 +64,10 @@ class Navbar extends React.Component {
     
     return (
       <StyledNav>
-        <Link to={`/dashboard`} className="logo">
+        <Link to={`/app/dashboard`} className="logo">
           <Logo>SB</Logo>
         </Link>
-        <Link to={`/dashboard/clients`}>
+        <Link to={`/app/clients`}>
           <NavIcon className="fas fa-user" />
           <NavText>Clients</NavText>
         </Link>

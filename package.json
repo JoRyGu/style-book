@@ -10,8 +10,7 @@
     "rollback": "sequelize db:migrate:undo:all && sequelize db:migrate:undo:all --env test",
     "migrate": "sequelize db:migrate && sequelize db:migrate --env test",
     "resetdb": "npm run rollback && npm run migrate",
-    "heroku-postbuild": "cd client && npm install --only=dev && npm install && npm run build",
-    "test-cover": "istanbul cover --include-all-sources spec/integration/account_routes.spec.js && istanbul check-coverage"
+    "heroku-postbuild": "cd client && npm install --only=dev && npm install && npm run build"
   },
   "author": "Josh Gude",
   "license": "UNLICENSED",
