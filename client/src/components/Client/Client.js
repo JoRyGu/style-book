@@ -17,6 +17,8 @@ class Client extends Component {
 
     this.fetchClients = this.fetchClients.bind(this);
     this.sortClients = this.sortClients.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   componentWillMount() {
@@ -91,6 +93,23 @@ class Client extends Component {
 
     return sortedList;
   }
+
+  handleChange(e) {
+    const filteredClients = this.state.clients.filter(client => {
+      const clientName = `${client.firstName.toLowerCase()} ${client.lastName.toLowerCase()}`;
+      return clientName.includes(e.target.value.toLowerCase()) || 
+             client.phoneNumber.includes(e.target.value.toLowerCase()) ||
+             (client.email && client.email.toLowerCase().includes(e.target.value.toLowerCase()));
+    });
+
+    this.setState({
+      filteredClients
+    });
+  }
+
+  handleSubmit(e) {
+    e.preventDefault();
+  }
   
   render() {
     return (
@@ -98,7 +117,16 @@ class Client extends Component {
         <Navbar />
         <PageContainer>
           <PageTitle>Clients</PageTitle>
+          <SearchDiv onSubmit={this.handleSubmit}>
+            <ClientSearch placeholder="Search Clients" onChange={this.handleChange} />
+            <SearchButton>
+              <img src="https://img.icons8.com/material/24/000000/search.png" alt="search" />
+            </SearchButton>
+          </SearchDiv>
+          
+
           <ClientContainer>
+          
             {this.state.filteredClients.map(client => {
               return (
                 <ClientCard key={client.phoneNumber}>
@@ -136,11 +164,45 @@ const PageTitle = styled.h1`
   font-weight: bold;
 `;
 
+const SearchDiv = styled.form`
+  display: flex;
+  width: 100%;
+  justify-content: center;
+`;
+
+const ClientSearch = styled.input`
+  border: 1px solid black;
+  border-width: 1px 0 1px 1px;
+  outline: none;
+  font-size: 2em;
+  width: 20%;
+  padding: 0 10px 0 10px;
+  border-radius: 5px 0 0 5px;
+`;
+
+const SearchButton = styled.button`
+  border-radius: 0 5px 5px 0;
+  height: 31.5px;
+  border-top: 1px solid black;
+  border-right: 1px solid black;
+  border-bottom: 1px solid black;
+  width: 40px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  :hover {
+    cursor: pointer;
+  }
+`;
+
 const ClientContainer = styled.ul`
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   min-height: 100vh;
+  width: 100%;
 `;
 
 const ClientCard = styled.li`
