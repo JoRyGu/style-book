@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Navbar from '../UI/Navbar';
 import styled from 'styled-components';
+import dateFns from 'date-fns';
 import { withRouter } from 'react-router-dom';
 import { AuthContext } from '../Authentication/AuthenticateUser';
 import axios from 'axios';
@@ -132,9 +133,9 @@ class Client extends Component {
                 <ClientCard key={client.phoneNumber}>
                   <ClientPhoto src={user} alt="User"/>
                   <ClientName>{client.firstName} {client.lastName}</ClientName>
-                  <ClientPhoneNumber>{client.phoneNumber}</ClientPhoneNumber>
+                  <ClientPhoneNumber>{`(${client.phoneNumber.split('').slice(0, 3).join('')}) ${client.phoneNumber.split('').slice(3, 6).join('')}-${client.phoneNumber.split('').slice(6).join('')}`}</ClientPhoneNumber>
                   <ClientDetails>Email: {client.email || "No Email Set"}</ClientDetails>
-                  <ClientDetails>Last Visit: {client.lastVisit || "Client's first visit."} </ClientDetails>
+                  <ClientDetails>Last Visit: {client.lastVisit ? dateFns.format(client.lastVisit, 'dddd, MMMM D, YYYY') : "Client's first visit."} </ClientDetails>
                   <ClientDetails>No Show Status: { client.noShow ? "No-Show on Record" : "OK" }</ClientDetails>
                 </ClientCard>
               )
