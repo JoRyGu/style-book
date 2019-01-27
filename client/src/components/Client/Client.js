@@ -140,7 +140,7 @@ const ClientContainer = styled.ul`
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  
+  min-height: 100vh;
 `;
 
 const ClientCard = styled.li`
