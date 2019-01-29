@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { AuthContext } from '../Authentication/AuthenticateUser';
-import { Link, withRouter } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 class Navbar extends React.Component {
   static contextType = AuthContext;

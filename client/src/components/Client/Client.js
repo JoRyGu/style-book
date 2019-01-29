@@ -8,7 +8,6 @@ import dateFns from 'date-fns';
 import { AuthContext } from '../Authentication/AuthenticateUser';
 import axios from 'axios';
 import user from '../../static/images/user.png';
-import { cookie } from 'express-validator/check';
 
 
 class Client extends Component {
@@ -16,7 +15,7 @@ class Client extends Component {
   constructor(props) {
     super(props);
 
-    if(sessionStorage.getItem('clientState')) {
+    if(sessionStorage.getItem('clientState') && JSON.parse(sessionStorage.getItem('clientState')).stylistId === this.props.context.userId) {
       this.state = JSON.parse(sessionStorage.getItem('clientState'));
     } else {
       this.state = {
@@ -72,7 +71,6 @@ class Client extends Component {
     if(!localStorage.getItem('stylistToken')) {
       axios.get('/app/login');
     }
-    
   }
 
   fetchClients() {
