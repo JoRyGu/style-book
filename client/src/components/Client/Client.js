@@ -1,25 +1,41 @@
 import React, { Component } from 'react';
 import Navbar from '../UI/Navbar';
+import Button from '../UI/Button';
+import NewClient from './NewClient';
+
 import styled from 'styled-components';
 import dateFns from 'date-fns';
-import { withRouter } from 'react-router-dom';
 import { AuthContext } from '../Authentication/AuthenticateUser';
 import axios from 'axios';
 import user from '../../static/images/user.png';
+import { cookie } from 'express-validator/check';
+
 
 class Client extends Component {
+  static contextType = AuthContext;
   constructor(props) {
     super(props);
 
-    this.state = {
+    if(sessionStorage.getItem('clientState')) {
+      this.state = JSON.parse(sessionStorage.getItem('clientState'));
+    } else {
+      this.state = {
       clients: [],
-      filteredClients: []
-    };
+      filteredClients: [],
+      newClientVisible: false,
+      stylistId: this.props.context.userId
+      };
+    }
+
+    
 
     this.fetchClients = this.fetchClients.bind(this);
     this.sortClients = this.sortClients.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleNewClientClick = this.handleNewClientClick.bind(this);
+    this.handleCancelClick = this.handleCancelClick.bind(this);
+    this.handleNewClientCreated = this.handleNewClientCreated.bind(this);
   }
 
   componentWillMount() {
@@ -27,26 +43,10 @@ class Client extends Component {
     if(!token) {
       axios.get('/app/login');
     }
-
-    
-    
   }
 
   componentDidMount() {
-    this.fetchClients();
-    window.addEventListener('load', this.fetchClients);
-
-  }
-
-  componentWillUnmount() {
-    if(!localStorage.getItem('stylistToken')) {
-      axios.get('/app/login');
-    }
-    window.removeEventListener('load', this.fetchClients);
-  }
-
-  fetchClients() {
-    const userId = this.props.context.userId;
+    const userId = this.state.stylistId;
     const token = localStorage.getItem('stylistToken');
     axios({
       url: `/api/v1/${userId}/clients`,
@@ -60,6 +60,38 @@ class Client extends Component {
       this.setState({
         clients: sortedClients,
         filteredClients: sortedClients
+      }, () => {
+        sessionStorage.setItem('clientState', JSON.stringify(this.state));
+      });
+    }).catch(err => {
+      console.log(err);
+    })
+  }
+
+  componentWillUnmount() {
+    if(!localStorage.getItem('stylistToken')) {
+      axios.get('/app/login');
+    }
+    
+  }
+
+  fetchClients() {
+    const userId = this.state.stylistId;
+    const token = localStorage.getItem('stylistToken');
+    axios({
+      url: `/api/v1/${userId}/clients`,
+      method: 'get',
+      headers: {
+        Authorization: token
+      }
+    }).then(res => {
+      const sortedClients = this.sortClients(res.data.clients);
+      
+      this.setState({
+        clients: sortedClients,
+        filteredClients: sortedClients
+      }, () => {
+        sessionStorage.setItem('clientState', JSON.stringify(this.state));
       });
     }).catch(err => {
       console.log(err);
@@ -111,10 +143,40 @@ class Client extends Component {
   handleSubmit(e) {
     e.preventDefault();
   }
-  
+
+  handleNewClientClick() {
+    this.setState({
+      newClientVisible: true
+    })
+  }
+
+  handleCancelClick() {
+    this.setState({
+      newClientVisible: false
+    })
+  }
+
+  handleNewClientCreated() {
+    this.setState({
+      newClientVisible: false
+    });
+    this.fetchClients();
+  }
+
   render() {
     return (
       <div>
+        { this.state.newClientVisible ? 
+        <NewClient 
+          handleCancelClick={this.handleCancelClick}
+          handleClientCreated={this.handleNewClientCreated}
+          context={this.props.context} 
+          fetch={this.fetchClients}
+          emailErr={this.state.emailErr} 
+          firstNameErr={this.state.firstNameErr}
+          lastNameErr={this.state.lastNameErr}
+          /> 
+        : null }
         <Navbar />
         <PageContainer>
           <PageTitle>Clients</PageTitle>
@@ -124,7 +186,7 @@ class Client extends Component {
               <img src="https://img.icons8.com/material/24/000000/search.png" alt="search" />
             </SearchButton>
           </SearchDiv>
-          
+          <Button red onClick={this.handleNewClientClick} >Add New Client</Button>
 
           <ClientContainer>
           
@@ -150,19 +212,26 @@ class Client extends Component {
 }
 
 const PageContainer = styled.div`
-  background: url('https://images.unsplash.com/photo-1527799820374-dcf8d9d4a388?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=3871&q=80');
-  background-position: center;
-  background-size: cover;
+  background: gray;
+  background-size: contain;
+  background-repeat: repeat-y;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  width: 100%;
+
+  > button {
+    width: 200px;
+    margin: 20px 0 10px 0;
+  }
 `;
 
 const PageTitle = styled.h1`
   font-size: 4em;
   margin: 25px;
   font-weight: bold;
+  text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
 `;
 
 const SearchDiv = styled.form`
@@ -174,7 +243,6 @@ const SearchDiv = styled.form`
 const ClientSearch = styled.input`
   border: 1px solid black;
   border-width: 1px 0 1px 1px;
-  outline: none;
   font-size: 2em;
   width: 20%;
   padding: 0 10px 0 10px;

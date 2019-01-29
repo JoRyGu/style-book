@@ -65,6 +65,17 @@ module.exports = {
       } catch (error) {
         throw error;
       }
+    },
+    async getByPhoneNumber(phoneNumber) {
+      try {
+        return await Client.findOne({
+          where: {
+            phoneNumber
+          }
+        })
+      } catch(error) {
+        throw error;
+      }
     }
   }
 }
