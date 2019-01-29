@@ -212,9 +212,8 @@ class Client extends Component {
 }
 
 const PageContainer = styled.div`
-  background: gray;
-  background-size: contain;
-  background-repeat: repeat-y;
+  background: url('https://images.unsplash.com/photo-1527799820374-dcf8d9d4a388?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2671&q=80');
+  background-attachment: fixed;
   display: flex;
   flex-direction: column;
   justify-content: center;
