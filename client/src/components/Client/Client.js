@@ -9,15 +9,20 @@ import { AuthContext } from '../Authentication/AuthenticateUser';
 import axios from 'axios';
 import user from '../../static/images/user.png';
 
+import jwtDecode from 'jwt-decode';
+
 
 class Client extends Component {
   static contextType = AuthContext;
   constructor(props) {
     super(props);
+    this.stylist = localStorage.getItem('stylistToken') ? jwtDecode(localStorage.getItem('stylistToken')).id : null;
 
-    if(sessionStorage.getItem('clientState') && JSON.parse(sessionStorage.getItem('clientState')).stylistId === this.props.context.userId) {
+    if(sessionStorage.getItem('clientState') && localStorage.getItem('stylistToken') && JSON.parse(sessionStorage.getItem('clientState')).stylistId === this.stylist) {
+      console.log('correct user found');
       this.state = JSON.parse(sessionStorage.getItem('clientState'));
     } else {
+      console.log('incorrect stylist found');
       this.state = {
       clients: [],
       filteredClients: [],
@@ -46,6 +51,11 @@ class Client extends Component {
 
   componentDidMount() {
     const userId = this.state.stylistId;
+
+    if(!userId) { 
+      axios.get('/app/login');
+    }
+
     const token = localStorage.getItem('stylistToken');
     axios({
       url: `/api/v1/${userId}/clients`,
