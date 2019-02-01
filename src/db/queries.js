@@ -76,6 +76,13 @@ module.exports = {
       } catch(error) {
         throw error;
       }
+    },
+    async getById(id) {
+      try {
+        return await Client.findByPk(id);
+      } catch (error) {
+        throw error;
+      }
     }
   }
 }

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import Navbar from '../UI/Navbar';
 import Button from '../UI/Button';
 import NewClient from './NewClient';
@@ -11,7 +12,6 @@ import user from '../../static/images/user.png';
 
 import jwtDecode from 'jwt-decode';
 
-
 class Client extends Component {
   static contextType = AuthContext;
   constructor(props) {
@@ -19,10 +19,8 @@ class Client extends Component {
     this.stylist = localStorage.getItem('stylistToken') ? jwtDecode(localStorage.getItem('stylistToken')).id : null;
 
     if(sessionStorage.getItem('clientState') && localStorage.getItem('stylistToken') && JSON.parse(sessionStorage.getItem('clientState')).stylistId === this.stylist) {
-      console.log('correct user found');
       this.state = JSON.parse(sessionStorage.getItem('clientState'));
     } else {
-      console.log('incorrect stylist found');
       this.state = {
       clients: [],
       filteredClients: [],
@@ -30,8 +28,6 @@ class Client extends Component {
       stylistId: this.props.context.userId
       };
     }
-
-    
 
     this.fetchClients = this.fetchClients.bind(this);
     this.sortClients = this.sortClients.bind(this);
@@ -200,11 +196,11 @@ class Client extends Component {
           
             {this.state.filteredClients.map(client => {
               return (
-                <ClientCard key={client.phoneNumber}>
+                <ClientCard key={client.phoneNumber} to={`/app/clients/${client.id}`}>
                   <ClientPhoto src={user} alt="User"/>
                   <ClientName>{client.firstName} {client.lastName}</ClientName>
                   <ClientPhoneNumber>{`(${client.phoneNumber.split('').slice(0, 3).join('')}) ${client.phoneNumber.split('').slice(3, 6).join('')}-${client.phoneNumber.split('').slice(6).join('')}`}</ClientPhoneNumber>
-                  <ClientDetails>Email: {client.email || "No Email Set"}</ClientDetails>
+                  <ClientDetails>Email: { client.email || "No Email Set" }</ClientDetails>
                   <ClientDetails>Last Visit: {client.lastVisit ? dateFns.format(client.lastVisit, 'dddd, MMMM D, YYYY') : "Client's first visit."} </ClientDetails>
                   <ClientDetails>No Show Status: { client.noShow ? "No-Show on Record" : "OK" }</ClientDetails>
                 </ClientCard>
@@ -281,7 +277,7 @@ const ClientContainer = styled.ul`
   width: 100%;
 `;
 
-const ClientCard = styled.li`
+const ClientCard = styled(Link)`
   height: 400px;
   width: 22%;
   border: 1px solid black;
@@ -293,6 +289,15 @@ const ClientCard = styled.li`
   box-shadow: 2px 2px 2px rgba(0,0,0,0.5);
   border-radius: 3px;
   background-color: rgba(215, 215, 215, 0.95);
+  text-decoration: none;
+
+  :visited {
+    color: black;
+  }
+
+  :link {
+    color: black;
+  }
 
   :hover {
     cursor: pointer;

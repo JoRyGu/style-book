@@ -4,6 +4,8 @@ import Login from './components/SignIn/Login';
 import AuthenticateUser, { AuthContext } from './components/Authentication/AuthenticateUser';
 import Dashboard from './components/Dashboard/Dashboard';
 import Client from './components/Client/Client';
+import ClientProfile from './components/ClientProfile/ClientProfile';
+
 import './App.css';
 
 class App extends Component {
@@ -23,11 +25,12 @@ class App extends Component {
           <Route path="/app/signup" component={ Login } />
           <AuthenticateUser>
             <Route path="/app/dashboard" component={ Dashboard } />
-            <Route path="/app/clients" 
+            <Route exact path="/app/clients" 
                    render={() => 
                    <AuthContext.Consumer>
                      {context => <Client context={context} />}
                    </AuthContext.Consumer> } />
+            <Route exact path="/app/clients/:id" component={ ClientProfile }/>
           </AuthenticateUser>
         </Switch>
       </Router>
